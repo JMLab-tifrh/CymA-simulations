@@ -1,0 +1,57 @@
+integrator              = md
+dt                      = 0.002
+nsteps                  = 5000000
+;nstxout                 = 5000
+;nstvout                 = 5000
+;nstfout                 = 50000
+nstxout-compressed      = 5000
+compressed-x-precision  = 1000
+nstcalcenergy           = 100
+nstenergy               = 5000
+nstlog                  = 5000
+;
+cutoff-scheme           = Verlet
+nstlist                 = 20
+rlist                   = 1.2
+vdwtype                 = Cut-off
+vdw-modifier            = Force-switch
+rvdw_switch             = 1.0
+rvdw                    = 1.2
+coulombtype             = PME
+rcoulomb                = 1.2
+;
+tcoupl                  = Nose-Hoover
+tc_grps                 = SOLU MEMB SOLV LIG
+tau_t                   = 1.0 1.0 1.0 1.0
+ref_t                   = 303.15 303.15 303.15 303.15
+;
+pcoupl                  = Parrinello-Rahman
+pcoupltype              = semiisotropic
+tau_p                   = 5.0
+compressibility         = 4.5e-5  4.5e-5
+ref_p                   = 1.0     1.0
+;
+constraints             = h-bonds
+constraint_algorithm    = LINCS
+continuation            = yes
+;
+nstcomm                 = 100
+comm_mode               = linear
+comm_grps               = SOLU_MEMB SOLV_LIG
+
+pull                    = yes
+pull_ncoords            = 1         ; only one reaction coordinate
+pull_ngroups            = 2         ; two groups defining one reaction coordinate
+pull_group1_name        = LIG
+;pull_group2_name        = betab_CA
+pull_group2_name        = SOLU
+pull_coord1_type        = umbrella  ; harmonic potential
+pull_coord1_geometry    = direction  ; simple distance increase
+pull_coord1_dim         = Y Y Y     ; pull along z
+pull_coord1_groups      = 1 2       ; groups 1 (Chain A) and 2 (Chain B) define the reaction coordinate
+pull_coord1_init        = -3.00
+pull_coord1_start       = no      ; define initial COM distance > 0
+;pull_coord1_rate        = 0.0001      ; 0.0001 nm per ps = 0.01 nm per ns
+pull_coord1_k           = 1000      ; kJ mol^-1 nm^-2
+pull-nstxout            = 500
+pull-coord1-vec         = 0 0 1
